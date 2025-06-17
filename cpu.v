@@ -14,18 +14,18 @@ module cpu (
     input clk, reset
 );
 
-    wire mux1op, mux2op, writeable, jump, branch;
+    wire mux1op, mux2op, writeable;
     wire [2:0] aluop;
     wire [7:0] opcode;
-
+    wire [1:0] bselect;
+    
     control_unit my_cu(
         .opcode(opcode),
         .writeable(writeable),
         .aluop(aluop),
         .mux1op(mux1op),
         .mux2op(mux2op),
-        .jump(jump),
-        .branch(branch)
+        .bselect(bselect)
     );
 
     wire [2:0] readreg1, readreg2, writereg;
@@ -61,7 +61,7 @@ module cpu (
     jumpbranchAdder my_jumpbranchAdder(PCplus4, offset, target);
 
     wire flowselect;
-    flowcontrol my_flowcontrol(jump, branch, zero, flowselect);
+    flowcontrol my_flowcontrol(bselect, zero, flowselect);
 
     wire [31:0] PCout;
     mux32 flowctrlmux(PCplus4, target, flowselect, PCout);
