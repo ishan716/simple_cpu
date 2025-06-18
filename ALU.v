@@ -4,7 +4,9 @@
 //add/sub output B
 //and output C
 //or output D
+//mult output E
 
+`include "mult.v"
 
 //forward module
 module forwardUnit(input  [7:0] op2, output reg [7:0] A );
@@ -34,7 +36,7 @@ endmodule
 
 
 //mux to select the output according to the units
-module muxUnit(input [7:0] A,input [7:0] B,input [7:0] C,input [7:0] D, input [2:0] select,output reg [7:0] result);
+module muxUnit(input [7:0] A,input [7:0] B,input [7:0] C,input [7:0] D,input[7:0] E, input [2:0] select,output reg [7:0] result);
     always @(A or B or C or D or select)
     if (select == 3'b000)
         result = A;
@@ -44,11 +46,14 @@ module muxUnit(input [7:0] A,input [7:0] B,input [7:0] C,input [7:0] D, input [2
        #2 result = C;
     else if (select == 3'b011)
         #1 result = D;
+    else if(select==3'b110)
+        result=E;
+
 endmodule
 
 //logicSelect unit to combine the results of units
 module logicSelector(input [7:0] op1, input [7:0] op2,input [2:0] select,output [7:0] result,output zero);
-    wire [7:0] A,B,C,D;
+    wire [7:0] A,B,C,D,E;
 
     
 
@@ -56,7 +61,9 @@ module logicSelector(input [7:0] op1, input [7:0] op2,input [2:0] select,output 
     addsubUnit addsub1(op1,op2,B);
     andUnit and1(op1,op2,C);
     orUnit or1(op1,op2,D);
-    muxUnit mux1(A,B,C,D,select,result);
+    mult mult1(op1,op2,E);
+    muxUnit mux1(A,B,C,D,E,select,result);
+    
 
 		
 	//This section of the ALU contains the combinational logic to generate the ZERO output

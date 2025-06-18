@@ -77,6 +77,13 @@ module control_unit(
                 bselect   =2'b11;
                 writeable = 1'b0;
             end
+            8'b00001001:begin //mult
+                aluop=3'b110;
+                mux2op=1'b0;
+                mux1op=1'b0;
+                bselect=2'b00;
+                writeable=1'b1;
+            end
 
             default: begin // unknown instruction
                 // already set by default values
