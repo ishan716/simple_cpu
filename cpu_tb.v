@@ -1,7 +1,7 @@
 // Computer Architecture (CO224) - Lab 05
 // Design: Testbench of Integrated CPU of Simple Processor
 // Author: Kisaru Liyanage
-
+`include "cpu.v"
 module cpu_tb;
 
     reg CLK, RESET;

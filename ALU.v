@@ -7,6 +7,7 @@
 //mult output E
 
 `include "mult.v"
+`include "shift.v"
 
 //forward module
 module forwardUnit(input  [7:0] op2, output reg [7:0] A );
@@ -36,7 +37,7 @@ endmodule
 
 
 //mux to select the output according to the units
-module muxUnit(input [7:0] A,input [7:0] B,input [7:0] C,input [7:0] D,input[7:0] E, input [2:0] select,output reg [7:0] result);
+module muxUnit(input [7:0] A,input [7:0] B,input [7:0] C,input [7:0] D,input[7:0] E,input[7:0] F,input[7:0] G, input [2:0] select,output reg [7:0] result);
     always @(A or B or C or D or select)
     if (select == 3'b000)
         result = A;
@@ -48,12 +49,16 @@ module muxUnit(input [7:0] A,input [7:0] B,input [7:0] C,input [7:0] D,input[7:0
         #1 result = D;
     else if(select==3'b110)
         result=E;
+    else if(select==3'b101)
+        result=F;
+    else if(select==3'b111)
+        result=G;
 
 endmodule
 
 //logicSelect unit to combine the results of units
 module logicSelector(input [7:0] op1, input [7:0] op2,input [2:0] select,output [7:0] result,output zero);
-    wire [7:0] A,B,C,D,E;
+    wire [7:0] A,B,C,D,E,F,G;
 
     
 
@@ -62,7 +67,9 @@ module logicSelector(input [7:0] op1, input [7:0] op2,input [2:0] select,output 
     andUnit and1(op1,op2,C);
     orUnit or1(op1,op2,D);
     mult mult1(op1,op2,E);
-    muxUnit mux1(A,B,C,D,E,select,result);
+    left_shift shift1(op1,op2,F);
+    right_shift shift2(op1,op2,G);
+    muxUnit mux1(A,B,C,D,E,F,G,select,result);
     
 
 		

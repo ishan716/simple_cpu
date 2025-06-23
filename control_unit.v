@@ -84,6 +84,35 @@ module control_unit(
                 bselect=2'b00;
                 writeable=1'b1;
             end
+            8'b00001010:begin //sll
+                aluop=3'b101;
+                mux2op=1'b1;
+                mux1op=1'b0;
+                bselect=2'b00;
+                writeable=1'b1;
+            end
+            8'b00001011:begin //srl
+                aluop=3'b111;
+                mux2op=1'b1;
+                mux1op=1'b0;
+                bselect=2'b00;
+                writeable=1'b1;
+            end
+            8'b00001100:begin //sra
+                aluop=3'b111;
+                mux2op=1'b1;
+                mux1op=1'b0;
+                bselect=2'b00;
+                writeable=1'b1;
+            end
+            8'b00001101:begin //ror
+                aluop=3'b111;
+                mux2op=1'b1;
+                mux1op=1'b0;
+                bselect=2'b00;
+                writeable=1'b1;
+            end
+
 
             default: begin // unknown instruction
                 // already set by default values
